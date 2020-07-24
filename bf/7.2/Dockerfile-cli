@@ -1,0 +1,27 @@
+FROM php:7.2-cli-buster
+
+RUN apt-get update && apt-get install -y \
+        libcurl4-gnutls-dev \
+        zlib1g-dev libicu-dev g++ \
+        librabbitmq-dev \
+        libzip-dev \
+        zip \
+        libpng-dev libjpeg62-turbo-dev \
+    && pecl install amqp mongodb \
+	&& docker-php-ext-configure zip --with-libzip \
+	&& docker-php-ext-configure intl \
+	&& docker-php-ext-configure gd --with-jpeg-dir --with-png-dir \
+	&& docker-php-ext-install zip \
+	 curl \
+	 bcmath \
+	 sockets \
+	 pdo_mysql \
+	 exif \
+	 gd \
+	 calendar \
+	 intl \
+    && docker-php-ext-enable amqp mongodb
+
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site
