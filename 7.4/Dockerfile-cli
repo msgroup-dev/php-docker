@@ -1,11 +1,23 @@
-FROM php:7.4.7-fpm-alpine3.12
+FROM php:7.4.11-cli-alpine3.12
 
-RUN apk update && apk add --no-cache rabbitmq-c-dev libpng-dev php7-pear php7-dev gcc musl-dev make libzip-dev && \
-    docker-php-ext-configure zip && \
-    docker-php-ext-install bcmath pdo_mysql sockets gd exif pcntl zip && \
+RUN apk update \
+    && apk add --no-cache rabbitmq-c-dev libpng-dev php7-pear php7-dev gcc musl-dev make icu-dev libzip-dev autoconf automake libtool binutils git nghttp2 libressl-dev nghttp2-dev ca-certificates zstd-dev
+
+RUN cd /tmp/ \
+    && git clone --branch curl-7_72_0 https://github.com/curl/curl.git \
+    && cd curl \
+    && ./buildconf && ./configure --with-ssl  && make && make install \
+    && cd / \
+    && rm -rf /tmp/curl
+
+RUN docker-php-ext-configure zip && \
+    docker-php-ext-configure curl && \
+    docker-php-ext-install bcmath pdo_mysql sockets gd exif pcntl intl zip && \
     pecl install amqp && \
-    docker-php-ext-enable amqp && \
-    apk del php7-pear php7-dev gcc musl-dev make && \
-    chown -R www-data:www-data /var/www
+    docker-php-ext-enable amqp
+
+RUN apk del php7-pear php7-dev gcc musl-dev make autoconf automake libtool binutils git nghttp2 ca-certificates
+
+RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/site
