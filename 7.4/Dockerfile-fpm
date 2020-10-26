@@ -4,7 +4,7 @@ RUN apk update \
     && apk add --no-cache rabbitmq-c-dev libpng-dev php7-pear php7-dev gcc musl-dev make icu-dev libzip-dev autoconf automake libtool binutils git nghttp2 libressl-dev nghttp2-dev ca-certificates zstd-dev
 
 RUN cd /tmp/ \
-    && git clone --branch curl-7_72_0 https://github.com/curl/curl.git \
+    && git clone --branch curl-7_73_0 https://github.com/curl/curl.git \
     && cd curl \
     && ./buildconf && ./configure --with-ssl  && make && make install \
     && cd / \
