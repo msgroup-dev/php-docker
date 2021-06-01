@@ -1,4 +1,4 @@
-FROM php:7.4.11-cli-alpine3.12
+FROM php:7.4.19-cli-alpine3.12
 
 RUN apk update \
     && apk add --no-cache rabbitmq-c-dev libpng-dev php7-pear php7-dev gcc musl-dev make icu-dev libzip-dev autoconf automake libtool binutils git nghttp2 libressl-dev nghttp2-dev ca-certificates zstd-dev
