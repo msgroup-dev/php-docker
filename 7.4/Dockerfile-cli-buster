@@ -5,7 +5,7 @@ RUN apt update && apt install -y \
         librabbitmq-dev \
         libzip-dev \
         zip \
-        libcurl-dev \
+        libcurl4-gnutls-dev \
         libcurl4 \
     &&  docker-php-ext-install \
         bcmath \
