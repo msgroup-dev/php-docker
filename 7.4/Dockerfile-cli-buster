@@ -1,10 +1,22 @@
 FROM php:7.4.19-cli-buster
 
-RUN apt update && apt install -y libpng-dev librabbitmq-dev && \
-    docker-php-ext-install bcmath pdo_mysql sockets gd exif pcntl && \
-    pecl install amqp && \
-    docker-php-ext-enable amqp && \
-    apt purge -y libpng-dev librabbitmq-dev
+RUN apt update && apt install -y \
+        libpng-dev \
+        librabbitmq-dev \
+        libzip-dev \
+        zip \
+    &&  docker-php-ext-install \
+        bcmath \
+        pdo_mysql \
+        sockets \
+        gd \
+        exif \
+        pcntl \
+        zip \
+        curl \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
+    && apt purge -y libpng-dev librabbitmq-dev
 
 RUN chown -R www-data:www-data /var/www
 
