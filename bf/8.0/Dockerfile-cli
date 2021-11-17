@@ -1,13 +1,12 @@
-FROM php:7.4.25-fpm-buster
+FROM php:8.0.12-cli-buster
 
 RUN apt-get update && apt-get install -y \
         libcurl4-gnutls-dev \
         zlib1g-dev libicu-dev g++ \
-        librabbitmq-dev \
         libzip-dev \
         zip \
         libpng-dev libjpeg62-turbo-dev \
-    && pecl install amqp mongodb \
+    && pecl install mongodb \
 	&& docker-php-ext-install \
         zip \
         curl \
@@ -16,8 +15,7 @@ RUN apt-get update && apt-get install -y \
         pdo_mysql \
         exif \
         calendar \
-    && docker-php-ext-enable amqp \
-        mongodb \
+    && docker-php-ext-enable mongodb \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install \
