@@ -1,0 +1,27 @@
+FROM php:8.1.0-cli-buster
+
+RUN apt-get update && apt-get install -y \
+        libcurl4-gnutls-dev \
+        zlib1g-dev libicu-dev g++ \
+        libzip-dev \
+        zip \
+        libpng-dev libjpeg62-turbo-dev \
+    && pecl install mongodb \
+	&& docker-php-ext-install \
+        zip \
+        curl \
+        bcmath \
+        sockets \
+        pdo_mysql \
+        exif \
+        calendar \
+    && docker-php-ext-enable mongodb \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install \
+    	gd \
+    	intl
+
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site

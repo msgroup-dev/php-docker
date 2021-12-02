@@ -1,4 +1,4 @@
-all: php7.3 php7.4 php8.0 php8.1 php7.4-bf php8.0-bf
+all: php7.3 php7.4 php8.0 php8.1 php7.4-bf php8.0-bf php8.1-bf
 
 # php 7.3 images
 php7.3: php7.3-cli php7.3-cli-buster php7.3-fpm
@@ -61,7 +61,7 @@ php8.1-fpm:
 	docker push msgroup/php:8.1-fpm
 
 #bf images
-php-bf: php7.4-bf php8.0-bf
+php-bf: php7.4-bf php8.0-bf php8.1-bf
 
 #php7.4 bf images
 php7.4-bf: php7.4-fpm-buster-fb php7.4-cli-buster-fb
@@ -84,3 +84,14 @@ php8.0-fpm-buster-fb:
 php8.0-cli-buster-fb:
 	docker build - -t msgroup/php:8.0-cli-buster-bf < bf/8.0/Dockerfile-cli
 	docker push msgroup/php:8.0-cli-buster-bf
+	
+# php 8.1 bf images
+php8.1-bf: php8.1-fpm-buster-fb php8.1-cli-buster-fb
+
+php8.1-fpm-buster-fb:
+	docker build - -t msgroup/php:8.1-fpm-buster-bf < bf/8.1/Dockerfile-fpm
+	docker push msgroup/php:8.1-fpm-buster-bf
+
+php8.1-cli-buster-fb:
+	docker build - -t msgroup/php:8.1-cli-buster-bf < bf/8.1/Dockerfile-cli
+	docker push msgroup/php:8.1-cli-buster-bf
