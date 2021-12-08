@@ -1,7 +1,27 @@
 FROM php:8.1.0-cli-alpine3.14
 
-RUN apk update \
-    && apk add --no-cache rabbitmq-c-dev libpng-dev php8-pear php8-dev gcc musl-dev make icu-dev libzip-dev autoconf automake libtool binutils git nghttp2 libressl-dev nghttp2-dev ca-certificates zstd-dev
+RUN apk update && apk add --no-cache \
+    	rabbitmq-c-dev  \
+    	libpng-dev  \
+    	jpeg-dev \
+		libjpeg-turbo-dev \
+    	php8-pear  \
+    	php8-dev  \
+    	gcc  \
+    	musl-dev  \
+    	make  \
+    	icu-dev  \
+    	libzip-dev  \
+    	autoconf  \
+    	automake  \
+    	libtool  \
+    	binutils  \
+    	git  \
+    	nghttp2  \
+    	libressl-dev  \
+    	nghttp2-dev  \
+    	ca-certificates  \
+    	zstd-dev
 
 RUN cd /tmp/ \
     && git clone --branch curl-7_80_0 https://github.com/curl/curl.git \
@@ -21,11 +41,34 @@ RUN cd /tmp/ \
 
 RUN docker-php-ext-configure zip && \
     docker-php-ext-configure curl && \
-    docker-php-ext-install bcmath pdo_mysql sockets gd exif pcntl intl zip && \
+    docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install  \
+    	bcmath  \
+    	pdo_mysql  \
+    	sockets  \
+    	gd  \
+    	exif  \
+    	pcntl  \
+    	intl  \
+    	zip && \
     pecl install amqp && \
     docker-php-ext-enable amqp
 
-RUN apk del php8-pear php8-dev gcc musl-dev make autoconf automake libtool binutils git nghttp2 ca-certificates
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+RUN apk del \
+	php8-pear  \
+    php8-dev  \
+    gcc  \
+    musl-dev  \
+    make  \
+    autoconf  \
+    automake  \
+    libtool  \
+    binutils  \
+    git  \
+    nghttp2  \
+    ca-certificates
 
 RUN chown -R www-data:www-data /var/www
 

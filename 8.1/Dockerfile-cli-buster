@@ -4,9 +4,11 @@ RUN apt update && apt install -y \
         libpng-dev \
         librabbitmq-dev \
         libzip-dev \
+    	libjpeg-dev \
         zip \
         libcurl4-gnutls-dev \
         libcurl4 \
+    && docker-php-ext-configure gd --with-jpeg \
     &&  docker-php-ext-install \
         bcmath \
         pdo_mysql \
