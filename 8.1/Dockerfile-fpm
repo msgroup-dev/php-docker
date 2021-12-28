@@ -4,6 +4,7 @@ RUN apk update && apk add --no-cache \
     	rabbitmq-c-dev  \
     	libpng-dev  \
     	jpeg-dev \
+    	libjpeg-turbo \
 		libjpeg-turbo-dev \
     	php8-pear  \
     	php8-dev  \
