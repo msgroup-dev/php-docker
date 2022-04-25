@@ -60,6 +60,14 @@ php8.1-fpm:
 	docker build - -t msgroup/php:8.1-fpm < 8.1/Dockerfile-fpm
 	docker push msgroup/php:8.1-fpm
 
+php8.1-fpm-imagick:
+	docker build - -t msgroup/php:8.1-fpm-imagick < 8.1/Dockerfile-fpm-imagick
+	docker push msgroup/php:8.1-fpm-imagick
+
+php8.1-cli-imagick:
+	docker build - -t msgroup/php:8.1-cli-imagick < 8.1/Dockerfile-cli-imagick
+	docker push msgroup/php:8.1-cli-imagick
+
 #bf images
 php-bf: php7.4-bf php8.0-bf php8.1-bf
 

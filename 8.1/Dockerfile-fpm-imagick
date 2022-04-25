@@ -1,0 +1,26 @@
+FROM php:8.1.0-fpm-buster
+
+RUN apt update && apt install -y \
+        libpng-dev \
+        librabbitmq-dev \
+        libzip-dev \
+        zip \
+        libcurl4-gnutls-dev \
+        libcurl4 \
+    	libmagickwand-dev && \
+	docker-php-ext-install \
+    	bcmath \
+    	sockets \
+    	pdo_mysql \
+        pcntl \
+        zip \
+        curl \
+    	exif && \
+    pecl install amqp imagick \
+    && docker-php-ext-enable amqp imagick \
+    && apt purge -y libpng-dev librabbitmq-dev
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+	chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site
