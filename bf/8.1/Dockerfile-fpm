@@ -1,11 +1,14 @@
-FROM php:8.1.11-fpm-buster
+FROM php:8.1.23-fpm-bullseye
 
 RUN apt-get update && apt-get install -y \
         libcurl4-gnutls-dev \
         zlib1g-dev libicu-dev g++ \
         libzip-dev \
         zip \
-        libpng-dev libjpeg62-turbo-dev \
+        libpng-dev  \
+        libjpeg62-turbo-dev  \
+        libwebp-dev \
+        libfreetype-dev\
     && pecl install mongodb \
 	&& docker-php-ext-install \
         zip \
@@ -17,7 +20,7 @@ RUN apt-get update && apt-get install -y \
         calendar \
     && docker-php-ext-enable mongodb \
     && docker-php-ext-configure intl \
-    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install \
     	gd \
     	intl
