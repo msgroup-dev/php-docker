@@ -1,0 +1,31 @@
+FROM php:8.2.24-cli-bullseye
+
+RUN apt-get update && apt-get install -y \
+        libcurl4-gnutls-dev \
+        zlib1g-dev libicu-dev g++ \
+        libzip-dev \
+        zip \
+        libpng-dev  \
+        libjpeg62-turbo-dev  \
+        libwebp-dev \
+        libfreetype-dev\
+    && pecl install mongodb \
+	&& docker-php-ext-install \
+        zip \
+        curl \
+        bcmath \
+        sockets \
+        pdo_mysql \
+        exif \
+        calendar \
+    && docker-php-ext-enable mongodb \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
+    && docker-php-ext-install \
+    	gd \
+    	intl
+
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+	chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site

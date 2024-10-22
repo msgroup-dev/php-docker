@@ -1,0 +1,76 @@
+FROM php:8.2.24-cli-alpine3.20
+
+RUN apk update && apk add --no-cache \
+        linux-headers \
+    	rabbitmq-c-dev  \
+    	libpng-dev  \
+    	jpeg-dev \
+		libjpeg-turbo-dev \
+    	php82-pear  \
+    	php82-dev  \
+    	gcc  \
+    	musl-dev  \
+    	make  \
+    	icu-dev  \
+    	libzip-dev  \
+    	autoconf  \
+    	automake  \
+    	libtool  \
+    	binutils  \
+    	git  \
+    	nghttp2  \
+    	libressl-dev  \
+    	nghttp2-dev  \
+    	ca-certificates  \
+    	zstd-dev
+
+RUN cd /tmp/ \
+    && git clone --branch curl-7_88_1 https://github.com/curl/curl.git \
+    && cd curl \
+    && ./buildconf && ./configure --with-ssl  && make && make install \
+    && cd / \
+    && rm -rf /tmp/curl
+
+RUN cd /tmp/ \
+    && git clone --recursive --depth=1 https://github.com/kjdev/php-ext-zstd.git \
+    && cd php-ext-zstd \
+    && phpize \
+    && ./configure --with-libzstd \
+    && make \
+    && make install \
+    && docker-php-ext-enable zstd
+
+RUN docker-php-ext-configure zip && \
+    docker-php-ext-configure curl && \
+    docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install  \
+    	bcmath  \
+    	pdo_mysql  \
+    	sockets  \
+    	gd  \
+    	exif  \
+    	pcntl  \
+    	intl  \
+    	zip && \
+    pecl install amqp && \
+    docker-php-ext-enable amqp
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+RUN apk del \
+	php82-pear  \
+    php82-dev  \
+    gcc  \
+    musl-dev  \
+    make  \
+    autoconf  \
+    automake  \
+    libtool  \
+    binutils  \
+    git  \
+    nghttp2  \
+    ca-certificates
+
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site

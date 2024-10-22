@@ -1,0 +1,27 @@
+FROM php:8.2.24-cli-bullseye
+
+RUN apt update && apt install -y \
+        libpng-dev \
+        librabbitmq-dev \
+        libzip-dev \
+    	libjpeg-dev \
+        zip \
+        libcurl4-gnutls-dev \
+        libcurl4 \
+    && docker-php-ext-configure gd --with-jpeg \
+    &&  docker-php-ext-install \
+        bcmath \
+        pdo_mysql \
+        sockets \
+        gd \
+        exif \
+        pcntl \
+        zip \
+        curl \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
+    && apt purge -y libpng-dev librabbitmq-dev
+
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/site

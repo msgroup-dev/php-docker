@@ -68,8 +68,31 @@ php8.1-cli-imagick:
 	docker build - -t msgroup/php:8.1-cli-imagick < 8.1/Dockerfile-cli-imagick
 	docker push msgroup/php:8.1-cli-imagick
 
+# php 8.2 images
+php8.2: php8.2-cli php8.2-cli-bullseye php8.2-fpm
+
+php8.2-cli:
+	docker build - -t msgroup/php:8.2-cli < 8.2/Dockerfile-cli
+	docker push msgroup/php:8.2-cli
+
+php8.2-cli-bullseye:
+	docker build - -t msgroup/php:8.2-cli-buster < 8.2/Dockerfile-cli-bullseye
+	docker push msgroup/php:8.2-cli-buster
+
+php8.2-fpm:
+	docker build - -t msgroup/php:8.2-fpm < 8.2/Dockerfile-fpm
+	docker push msgroup/php:8.2-fpm
+
+php8.2-fpm-imagick:
+	docker build - -t msgroup/php:8.2-fpm-imagick < 8.2/Dockerfile-fpm-imagick
+	docker push msgroup/php:8.2-fpm-imagick
+
+php8.2-cli-imagick:
+	docker build - -t msgroup/php:8.2-cli-imagick < 8.2/Dockerfile-cli-imagick
+	docker push msgroup/php:8.2-cli-imagick
+
 #bf images
-php-bf: php7.4-bf php8.0-bf php8.1-bf
+php-bf: php7.4-bf php8.0-bf php8.1-bf php8.2-bf
 
 #php7.4 bf images
 php7.4-bf: php7.4-fpm-buster-bf php7.4-cli-buster-bf
@@ -103,3 +126,14 @@ php8.1-fpm-buster-bf:
 php8.1-cli-buster-bf:
 	docker build - -t msgroup/php:8.1-cli-buster-bf < bf/8.1/Dockerfile-cli
 	docker push msgroup/php:8.1-cli-buster-bf
+
+# php 8.2 bf images
+php8.2-bf: php8.2-fpm-buster-bf php8.2-cli-buster-bf
+
+php8.2-fpm-buster-bf:
+	docker build - -t msgroup/php:8.2-fpm-buster-bf < bf/8.2/Dockerfile-fpm
+	docker push msgroup/php:8.2-fpm-buster-bf
+
+php8.2-cli-buster-bf:
+	docker build - -t msgroup/php:8.2-cli-buster-bf < bf/8.2/Dockerfile-cli
+	docker push msgroup/php:8.2-cli-buster-bf
